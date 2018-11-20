@@ -1,5 +1,6 @@
 Model/*/map
 Model/*/om
+.idea
 vendor
 composer.lock
 composer.phar
