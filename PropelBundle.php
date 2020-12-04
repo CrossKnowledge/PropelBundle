@@ -52,6 +52,7 @@ class PropelBundle extends Bundle
                     'time' => array('enabled' => true),
                     'mem' => array('enabled' => true),
                     'connection' => array('enabled' => true),
+                    'stacktrace' => array('enabled' => true),
                 ));
 
                 \Propel::setLogger($this->container->get('propel.logger'));
