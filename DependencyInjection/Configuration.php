@@ -175,8 +175,9 @@ class Configuration implements ConfigurationInterface
     private function getDbalConnectionsNode()
     {
         $treeBuilder = new TreeBuilder('connections');
+        $node = $treeBuilder->getRootNode();
 
-        $treeBuilder->getRootNode()
+        $node
             ->requiresAtLeastOneElement()
             ->useAttributeAsKey('name')
             ->prototype('array')
