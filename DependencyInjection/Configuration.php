@@ -42,8 +42,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('propel');
+        $treeBuilder = new TreeBuilder('propel');
+        $rootNode = $treeBuilder->getRootNode();
 
         $this->addGeneralSection($rootNode);
         $this->addDbalSection($rootNode);
