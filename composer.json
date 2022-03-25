@@ -18,10 +18,10 @@
   "require": {
     "propel/propel1": "^1.6",
     "symfony/framework-bundle": "^3.0|^4.0",
-    "symfony/symfony": "^3.0|^4.0"
+    "symfony/symfony": "^4.0"
   },
   "require-dev": {
-    "sensio/framework-extra-bundle": "^3.0|^4.0",
+    "sensio/framework-extra-bundle": "^4.0",
     "fzaninotto/faker": "^1.5",
     "phpunit/phpunit": "^8",
     "symfony/phpunit-bridge": "^6"
