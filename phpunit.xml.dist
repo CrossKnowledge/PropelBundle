@@ -7,11 +7,10 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         syntaxCheck="false"
          bootstrap="vendor/autoload.php">
 
     <php>
-        <ini name="error_reporting" value="E_ALL ^ E_DEPRECATED"/>
+        <ini name="error_reporting" value="E_ALL"/>
         <includePath>vendor/phing/phing/classes</includePath>
     </php>
 

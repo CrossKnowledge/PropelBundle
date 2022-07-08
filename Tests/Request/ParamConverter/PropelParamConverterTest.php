@@ -5,7 +5,10 @@ namespace Propel\Bundle\PropelBundle\Tests\Request\ParamConverter;
 use Propel\Bundle\PropelBundle\Request\ParamConverter\PropelParamConverter;
 use Propel\Bundle\PropelBundle\Tests\TestCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -13,7 +16,7 @@ class PropelParamConverterTest extends TestCase
 {
     protected $con;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         if (!interface_exists('Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface')) {
@@ -23,7 +26,7 @@ class PropelParamConverterTest extends TestCase
         \Propel::disableInstancePooling();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         \Propel::enableInstancePooling();
         if ($this->con) {
@@ -55,11 +58,9 @@ class PropelParamConverterTest extends TestCase
             'param "book" should be an instance of "Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Book"');
     }
 
-    /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
     public function testParamConverterFindPkNotFound()
     {
+        self::expectException(NotFoundHttpException::class);
         $paramConverter = new PropelParamConverter();
         $request = new Request(array(), array(), array('id' => 2, 'book' => null));
         $configuration = new ParamConverter(array('class' => 'Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Book', 'name' => 'book'));
@@ -87,11 +88,9 @@ class PropelParamConverterTest extends TestCase
             'param "book" should be an instance of "Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Book"');
     }
 
-    /**
-     * @expectedException Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
     public function testParamConverterFindSlugNotFound()
     {
+        self::expectException(NotFoundHttpException::class);
         $paramConverter = new PropelParamConverter();
         $request = new Request(array(), array(), array('slug' => 'my-foo', 'book' => null));
         $configuration = new ParamConverter(array('class' => 'Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Book', 'name' => 'book'));
@@ -110,11 +109,9 @@ class PropelParamConverterTest extends TestCase
             'param "book" should be an instance of "Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Book"');
     }
 
-    /**
-     * @expectedException LogicException
-     */
     public function testParamConverterFindByAllParamExcluded()
     {
+        self::expectException(\LogicException::class);
         $paramConverter = new PropelParamConverter();
         $request = new Request(array(), array(), array('slug' => 'my-book', 'name' => 'foo', 'book' => null));
         $configuration = new ParamConverter(array(
@@ -125,11 +122,9 @@ class PropelParamConverterTest extends TestCase
             'param "book" should be an instance of "Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Book"');
     }
 
-    /**
-     * @expectedException LogicException
-     */
     public function testParamConverterFindByIdExcluded()
     {
+        self::expectException(\LogicException::class);
         $paramConverter = new PropelParamConverter();
         $request = new Request(array(), array(), array('id' => '1234', 'book' => null));
         $configuration = new ParamConverter(array(
@@ -140,11 +135,9 @@ class PropelParamConverterTest extends TestCase
             'param "book" should be an instance of "Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Book"');
     }
 
-    /**
-     * @expectedException LogicException
-     */
     public function testParamConverterFindLogicError()
     {
+        self::expectException(\LogicException::class);
         $paramConverter = new PropelParamConverter();
         $request = new Request(array(), array(), array('book' => null));
         $configuration = new ParamConverter(array('class' => 'Propel\Bundle\PropelBundle\Tests\Fixtures\Model\Book', 'name' => 'book'));
@@ -293,7 +286,9 @@ class PropelParamConverterTest extends TestCase
             ),
         )));
 
-        $router = $this->getMock('Symfony\Bundle\FrameworkBundle\Routing\Router', array(), array(), '', false);
+        $router = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Routing\Router')
+            ->disableOriginalConstructor()
+            ->getMock();
         $router
             ->expects($this->once())
             ->method('getRouteCollection')

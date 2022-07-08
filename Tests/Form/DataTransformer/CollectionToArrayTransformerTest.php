@@ -13,12 +13,13 @@ namespace Propel\Bundle\PropelBundle\Tests\Form\DataTransformer;
 
 use Propel\Bundle\PropelBundle\Form\DataTransformer\CollectionToArrayTransformer;
 use Propel\Bundle\PropelBundle\Tests\TestCase;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class CollectionToArrayTransformerTest extends TestCase
 {
     private $transformer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->transformer = new CollectionToArrayTransformer();
     }
@@ -39,11 +40,9 @@ class CollectionToArrayTransformerTest extends TestCase
         $this->assertCount(0, $result);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     */
     public function testTransformThrowsExceptionIfNotPropelObjectCollection()
     {
+        $this->expectException(\Symfony\Component\Form\Exception\TransformationFailedException::class);
         $this->transformer->transform(new DummyObject());
     }
 
@@ -76,11 +75,9 @@ class CollectionToArrayTransformerTest extends TestCase
         $this->assertCount(0, $result->getData());
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     */
     public function testReverseTransformThrowsExceptionIfNotArray()
     {
+        self::expectException(TransformationFailedException::class);
         $this->transformer->reverseTransform(new DummyObject());
     }
 

@@ -9,6 +9,7 @@
  */
 namespace Propel\Bundle\PropelBundle\Tests;
 
+use \PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
@@ -17,9 +18,9 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class TestCase extends \PHPUnit_Framework_TestCase
+class TestCase extends PHPUnitTestCase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (!file_exists($file = __DIR__ . '/../vendor/propel/propel1/runtime/lib/Propel.php')) {
             self::markTestSkipped('Propel is not available.');

@@ -124,7 +124,6 @@ class PropelDataCollector extends DataCollector
             $con = explode($innerGlue, $parts[2]);
             $memories = explode($innerGlue, $parts[1]);
             $stacktrace = explode($innerGlue, $parts[3]);
-
             $sql = trim($parts[4]);
             $stacktrace = trim($stacktrace[1]);
             $con = trim($con[1]);

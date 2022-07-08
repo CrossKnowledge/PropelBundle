@@ -33,7 +33,7 @@ class DataWiperTest extends TestCase
 
         $builder = $this->getMockBuilder('Propel\Bundle\PropelBundle\DataFixtures\Loader\DataWiper');
         $wipeout = $builder
-            ->setMethods(array('loadMapBuilders'))
+            ->onlyMethods(array('loadMapBuilders'))
             ->disableOriginalConstructor()
             ->getMock()
         ;
