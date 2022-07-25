@@ -42,8 +42,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $node = $treeBuilder->root('propel');
+        $treeBuilder = new TreeBuilder('propel');
+        $node = $treeBuilder->getRootNode();
 
         $this->addGeneralSection($node);
         $this->addDbalSection($node);
@@ -174,8 +174,8 @@ class Configuration implements ConfigurationInterface
      */
     private function getDbalConnectionsNode()
     {
-        $treeBuilder = new TreeBuilder();
-        $node = $treeBuilder->root('connections');
+        $treeBuilder = new TreeBuilder('connections');
+        $node = $treeBuilder->getRootNode();
 
         $node
             ->requiresAtLeastOneElement()

@@ -30,7 +30,7 @@ class PropelDataCollectorTest extends TestCase
     public function testCollectWithData()
     {
         $queries = array(
-            "time: 0.000 sec | mem: 1.4 MB | connection: default | SET NAMES 'utf8'",
+            "time: 0.000 sec | mem: 1.4 MB | connection: default | stacktrace: true | SET NAMES 'utf8'",
         );
 
         $c = $this->createCollector($queries);
@@ -42,17 +42,19 @@ class PropelDataCollectorTest extends TestCase
                 'time' => '0.000 sec',
                 'connection' => 'default',
                 'memory' => '1.4 MB',
+                "stacktrace" => "true"
             ),
         ), $c->getQueries());
+
         $this->assertEquals(1, $c->getQueryCount());
     }
 
     public function testCollectWithMultipleData()
     {
         $queries = array(
-            "time: 0.000 sec | mem: 1.4 MB | connection: default | SET NAMES 'utf8'",
-            'time: 0.012 sec | mem: 2.4 MB | connection: default | SELECT tags.NAME, image.FILENAME FROM tags LEFT JOIN image ON tags.IMAGEID = image.ID WHERE image.ID = 12',
-            "time: 0.012 sec | mem: 2.4 MB | connection: default | INSERT INTO `table` (`some_array`) VALUES ('| 1 | 2 | 3 |')",
+            "time: 0.000 sec | mem: 1.4 MB | connection: default | stacktrace: true | SET NAMES 'utf8'",
+            'time: 0.012 sec | mem: 2.4 MB | connection: default | stacktrace: true | SELECT tags.NAME, image.FILENAME FROM tags LEFT JOIN image ON tags.IMAGEID = image.ID WHERE image.ID = 12',
+            "time: 0.012 sec | mem: 2.4 MB | connection: default | stacktrace: true | INSERT INTO `table` (`some_array`) VALUES ('| 1 | 2 | 3 |')",
         );
 
         $c = $this->createCollector($queries);
@@ -64,18 +66,21 @@ class PropelDataCollectorTest extends TestCase
                 'time' => '0.000 sec',
                 'connection' => 'default',
                 'memory' => '1.4 MB',
+                "stacktrace" => "true"
             ),
             array(
                 'sql' => 'SELECT tags.NAME, image.FILENAME FROM tags LEFT JOIN image ON tags.IMAGEID = image.ID WHERE image.ID = 12',
                 'time' => '0.012 sec',
                 'connection' => 'default',
                 'memory' => '2.4 MB',
+                "stacktrace" => "true"
             ),
             array(
                 'sql' => "INSERT INTO `table` (`some_array`) VALUES ('| 1 | 2 | 3 |')",
                 'time' => '0.012 sec',
                 'connection' => 'default',
                 'memory' => '2.4 MB',
+                "stacktrace" => "true"
             ),
         ), $c->getQueries());
         $this->assertEquals(3, $c->getQueryCount());
@@ -84,7 +89,7 @@ class PropelDataCollectorTest extends TestCase
 
     private function createCollector($queries)
     {
-        $config = $this->getMock('\PropelConfiguration');
+        $config = $this->getMockBuilder(\PropelConfiguration::class)->getMock();
 
         $config
             ->expects($this->any())
@@ -92,7 +97,7 @@ class PropelDataCollectorTest extends TestCase
             ->will($this->returnArgument(1))
         ;
 
-        $logger = $this->getMock('\Propel\Bundle\PropelBundle\Logger\PropelLogger');
+        $logger = $this->getMockBuilder('\Propel\Bundle\PropelBundle\Logger\PropelLogger')->getMock();
         $logger
             ->expects($this->any())
             ->method('getQueries')

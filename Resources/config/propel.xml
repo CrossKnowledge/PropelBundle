@@ -14,17 +14,22 @@
         <parameter key="propel.twig.extension.syntax.class">Propel\Bundle\PropelBundle\Twig\Extension\SyntaxExtension</parameter>
         <parameter key="form.type_guesser.propel.class">Propel\Bundle\PropelBundle\Form\PropelTypeGuesser</parameter>
         <parameter key="propel.security.user.provider.class">Propel\Bundle\PropelBundle\Security\User\PropelUserProvider</parameter>
+        <parameter key="propel.file_locator.class">Symfony\Component\HttpKernel\Config\FileLocator</parameter>
     </parameters>
 
     <services>
         <service id="propel.configuration" class="%propel.configuration.class%" public="true" />
 
-        <service id="propel.build_properties" class="%propel.build_properties.class%" />
+        <service id="propel.build_properties" class="%propel.build_properties.class%" public="true" />
 
         <service id="propel.logger" class="%propel.logger.class%" public="true">
             <tag name="monolog.logger" channel="propel" />
             <argument type="service" id="logger" on-invalid="null" />
             <argument type="service" id="debug.stopwatch" on-invalid="null" />
+        </service>
+
+        <service id="file_locator" class="%propel.file_locator.class%" public="true">
+            <argument type="service" id="kernel" on-invalid="null" />
         </service>
 
         <service id="propel.data_collector" class="%propel.data_collector.class%" public="false">
@@ -33,15 +38,15 @@
             <argument type="service" id="propel.configuration" />
         </service>
 
-        <service id="propel.form.type.model" class="%propel.form.type.model.class%">
+        <service id="propel.form.type.model" class="%propel.form.type.model.class%" public="true">
             <tag name="form.type" alias="model" />
         </service>
 
-        <service id="propel.twig.extension.syntax" class="%propel.twig.extension.syntax.class%">
+        <service id="propel.twig.extension.syntax" class="%propel.twig.extension.syntax.class%" public="true">
             <tag name="twig.extension" />
         </service>
 
-        <service id="form.type_guesser.propel" class="%form.type_guesser.propel.class%">
+        <service id="form.type_guesser.propel" class="%form.type_guesser.propel.class%" public="true">
             <tag name="form.type_guesser" />
         </service>
 

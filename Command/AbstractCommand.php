@@ -65,6 +65,10 @@ abstract class AbstractCommand extends Command
      */
     protected $input;
 
+    protected function getContainer() {
+        return \Framework::getInstance()->getSfContainer();
+    }
+
     /**
      * Return the package for a given bundle.
      *

@@ -16,14 +16,16 @@
   },
 
   "require": {
+    "php": "^7.2",
     "propel/propel1": "^1.6",
     "symfony/framework-bundle": "^3.0|^4.0",
     "symfony/symfony": "^4.0"
   },
   "require-dev": {
+    "ext-sqlite3": "*",
     "sensio/framework-extra-bundle": "^4.0",
     "fzaninotto/faker": "^1.5",
-    "phpunit/phpunit": "^8",
+    "phpunit/phpunit": "^8.5.27",
     "symfony/phpunit-bridge": "^6"
   },
 
@@ -34,7 +36,6 @@
   "replace": {
     "symfony/propel1-bridge": "<=2.8.0"
   },
-
   "suggest": {
     "propel/propel-acl-bundle": "For using the Propel ACL implementation"
   }

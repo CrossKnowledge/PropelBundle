@@ -20,7 +20,7 @@ class GeneratorAwareCommandTest extends TestCase
 {
     protected $container;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -41,7 +41,7 @@ class GeneratorAwareCommandTest extends TestCase
         }
 
         $bookstore = $databases[0];
-        $this->assertEquals(1, count($bookstore->getTables()));
+        $this->assertCount(1, $bookstore->getTables());
 
         foreach ($bookstore->getTables() as $table) {
             $this->assertInstanceOf('\Table', $table);
@@ -63,7 +63,7 @@ class GeneratorAwareCommandTestable extends GeneratorAwareCommand
         return $this->container;
     }
 
-    public function getDatabasesFromSchema(\SplFileInfo $file)
+    public function getDatabasesFromSchema(\SplFileInfo $file, \XmlToAppData $transformer = null)
     {
         $this->loadPropelGenerator();
 
