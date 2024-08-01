@@ -16,15 +16,15 @@
   },
 
   "require": {
-    "php": "^7.2",
-    "propel/propel1": "^1.6",
-    "symfony/framework-bundle": "^3.0|^4.0",
-    "symfony/symfony": "^4.0"
+    "php": "^7.2|^8.3",
+    "propel/propel1": "1.6.19",
+    "symfony/framework-bundle": "^3.0|^4.0|^5.0",
+    "symfony/symfony": "^4.0|^5.0"
   },
   "require-dev": {
     "ext-sqlite3": "*",
-    "sensio/framework-extra-bundle": "^4.0",
-    "fzaninotto/faker": "^1.5",
+    "sensio/framework-extra-bundle": "^4.0|^5.0",
+    "fakerphp/faker": "^1.5",
     "phpunit/phpunit": "^8.5.27",
     "symfony/phpunit-bridge": "^6"
   },
@@ -38,5 +38,12 @@
   },
   "suggest": {
     "propel/propel-acl-bundle": "For using the Propel ACL implementation"
-  }
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/CrossKnowledge/Propel.git",
+      "packagist.org": false
+    }
+  ]
 }

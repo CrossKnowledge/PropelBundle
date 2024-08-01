@@ -19,6 +19,9 @@ use Symfony\Component\Filesystem\Filesystem;
 class FixturesLoadCommandTest extends TestCase
 {
     protected $command;
+    protected $fixturesDir;
+    protected $fixturesFiles;
+    protected $filesystem;
 
     public function setUp(): void
     {
