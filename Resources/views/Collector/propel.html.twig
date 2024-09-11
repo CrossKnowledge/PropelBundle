@@ -1,4 +1,4 @@
-{% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
 
 {% block toolbar %}
     {% if collector.querycount %}
@@ -15,7 +15,7 @@
 
         {% set text %}{% endset %}
 
-        {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { link: profiler_url } %}
+        {% include '@WebProfiler/Profiler/toolbar_item.html.twig' with { link: profiler_url } %}
     {% endif %}
 {% endblock %}
 
@@ -29,7 +29,7 @@
 
 {% block panel %}
     {# the panel content #}
-    <style type="text/css">
+    <style>
         .SQLKeyword {
             color: blue;
             white-space: nowrap;
@@ -66,7 +66,8 @@
     </style>
 
     <h2>Queries</h2>
-    <table summary="Show logged queries">
+    <table>
+        <caption>Show logged queries</caption>
         <thead>
         <tr>
             <th>SQL queries</th>
@@ -81,17 +82,19 @@
             {% for i, query in collector.queries %}
                 <tr>
                     <td>
-                        <a name="propel-query-{{ i }}"></a>
+                        <a id="propel-query-{{ i }}"></a>
                         <code>{{ query.sql|format_sql }}</code>
                         {% if app.request.query.has('query') and app.request.query.get('query') == i %}
-                            <div class="SQLExplain">
-                                {% render controller('PropelBundle:Panel:explain', {
-                                    'token': token,
-                                    'panel': 'propel',
-                                    'query': app.request.query.get('query'),
-                                    'connection': app.request.query.get('connection')
-                                }) %}
-                            </div>
+                        <div class="SQLExplain">
+                            {% endif %}
+                            {% render controller('PropelBundle:Panel:explain', {
+                                'token': token,
+                                'panel': 'propel',
+                                'query': app.request.query.get('query'),
+                                'connection': app.request.query.get('connection')
+                            }) %}
+                            {% if app.request.query.has('query') and app.request.query.get('query') == i %}
+                        </div>
                         {% endif %}
                         <div class="SQLInfo">
                             Time: {{ query.time }} - Memory: {{ query.memory }} - Connection: {{ query.connection }}
