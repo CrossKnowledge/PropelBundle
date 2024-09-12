@@ -38,16 +38,9 @@ class PanelController
     {
         $configuration = $this->container->get('propel.configuration')->getParameters();
 
-        $connections = array();
-        foreach ($configuration['datasources'] as $name => $config) {
-            if (isset($config['connection'])) {
-                $connections[$name] = $config['connection'];
-            }
-        }
-
         return new Response($this->twig->render('@Propel/Panel/configuration.html.twig', array(
             'propel_version'     => \Propel::VERSION,
-            'configuration'      => $connections,
+            'configuration'      => $configuration,
             'default_connection' => $this->container->getParameter('propel.dbal.default_connection'),
             'logging'            => $this->container->getParameter('propel.logging'),
             'path'               => $this->container->getParameter('propel.path'),
