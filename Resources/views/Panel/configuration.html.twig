@@ -2,37 +2,37 @@
 
 <table summary="Current Propel configuration">
     <tbody>
-    <tr>
-        <th>Propel version</th>
-        <td>{{ propel_version }}</td>
-    </tr>
-    <tr>
-        <th>Default connection</th>
-        <td>{{ default_connection }}</td>
-    </tr>
-    <tr>
-        <th>Logging</th>
-        <td>{{ logging ? 'enabled' : 'disabled' }}</td>
-    </tr>
-    <tr>
-        <th>Propel path</th>
-        <td>{{ path }}</td>
-    </tr>
-    <tr>
-        <th>Phing path</th>
-        <td>{{ phing_path }}</td>
-    </tr>
-    </tbody>
+        <tr>
+            <th>Propel version</th>
+            <td>{{ propel_version }}</td>
+        </tr>
+        <tr>
+            <th>Default connection</th>
+            <td>{{ default_connection }}</td>
+        </tr>
+        <tr>
+            <th>Logging</th>
+            <td>{{ logging ? 'enabled' : 'disabled' }}</td>
+        </tr>
+        <tr>
+            <th>Propel path</th>
+            <td>{{ path }}</td>
+        </tr>
+        <tr>
+            <th>Phing path</th>
+            <td>{{ phing_path }}</td>
+        </tr>
+        </tbody>
 </table>
 
 <h2>Propel connections</h2>
 
 <table summary="Current Propel connections">
     <thead>
-    <tr>
-        <th>Connection name</th>
-        <th colspan="2" style="text-align: center;">Configuration parameters</th>
-    </tr>
+        <tr>
+            <th>Connection name</th>
+            <th colspan="2" style="text-align: center;">Configuration parameters</th>
+        </tr>
     </thead>
     <tbody>
     {% for name, config in configuration %}
