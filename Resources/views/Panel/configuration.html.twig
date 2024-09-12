@@ -11,6 +11,7 @@
         <tr>
             <th>Default connection</th>
             <td>{{ default_connection }}</td>
+
         </tr>
         <tr>
             <th>Logging</th>
@@ -37,7 +38,7 @@
         </tr>
     </thead>
     <tbody>
-    {% for name, config in configuration.datasources %}
+        {% for name, config in configuration.datasources %}
         <tr>
             <th rowspan="5" style="vertical-align: top;">
                 {{ name }}
@@ -73,6 +74,6 @@
                 </ul>
             </td>
         </tr>
-    {% endfor %}
+        {% endfor %}
     </tbody>
 </table>
