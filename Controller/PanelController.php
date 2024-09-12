@@ -9,34 +9,50 @@
  */
 namespace Propel\Bundle\PropelBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Response;
+use Psr\Container\ContainerInterface;
+use Twig\Environment;
 
 /**
  * PanelController is designed to display information in the Propel Panel.
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class PanelController extends ContainerAware
+class PanelController
 {
+    use ContainerAwareTrait;
+
+    private $twig;
+
+    public function __construct(ContainerInterface $container, Environment $twig)
+    {
+        $this->container = $container;
+        $this->twig = $twig;
+    }
+
     /**
      * This method renders the global Propel configuration.
      */
     public function configurationAction()
     {
-        $templating = $this->container->get('templating');
+        $configuration = $this->container->get('propel.configuration')->getParameters();
 
-        return $templating->renderResponse(
-            'PropelBundle:Panel:configuration.html.twig',
-            array(
-                'propel_version'     => \Propel::VERSION,
-                'configuration'      => $this->container->get('propel.configuration')->getParameters(),
-                'default_connection' => $this->container->getParameter('propel.dbal.default_connection'),
-                'logging'            => $this->container->getParameter('propel.logging'),
-                'path'               => $this->container->getParameter('propel.path'),
-                'phing_path'         => $this->container->getParameter('propel.phing_path'),
-            )
-        );
+        $connections = array();
+        foreach ($configuration['datasources'] as $name => $config) {
+            if (isset($config['connection'])) {
+                $connections[$name] = $config['connection'];
+            }
+        }
+
+        return new Response($this->twig->render('@Propel/Panel/configuration.html.twig', array(
+            'propel_version'     => \Propel::VERSION,
+            'configuration'      => $connections,
+            'default_connection' => $this->container->getParameter('propel.dbal.default_connection'),
+            'logging'            => $this->container->getParameter('propel.logging'),
+            'path'               => $this->container->getParameter('propel.path'),
+            'phing_path'         => $this->container->getParameter('propel.phing_path'),
+        )));
     }
 
     /**
@@ -73,8 +89,8 @@ class PanelController extends ContainerAware
             return new Response('<div class="error">This query cannot be explained.</div>');
         }
 
-        return $this->container->get('templating')->renderResponse(
-            'PropelBundle:Panel:explain.html.twig',
+        return $this->twig->render(
+            '@Propel/Panel/explain.html.twig',
             array(
                 'data' => $results,
                 'query' => $query,

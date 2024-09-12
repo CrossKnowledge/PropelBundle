@@ -1,28 +1,27 @@
 <h2>Propel configuration</h2>
 
 <table summary="Current Propel configuration">
-    <thead>
-    </thead>
     <tbody>
-        <tr>
-            <th>Propel version</th>
-            <td>{{ propel_version }}</td>
-        </tr>
-        <tr>
-            <th>Default connection</th>
-            <td>{{ default_connection }}</td>
-        <tr>
-            <th>Logging</th>
-            <td>{{ logging ? 'enabled' : 'disabled' }}</td>
-        </tr>
-        <tr>
-            <th>Propel path</th>
-            <td>{{ path }}</td>
-        </tr>
-        <tr>
-            <th>Phing path</th>
-            <td>{{ phing_path }}</td>
-        </tr>
+    <tr>
+        <th>Propel version</th>
+        <td>{{ propel_version }}</td>
+    </tr>
+    <tr>
+        <th>Default connection</th>
+        <td>{{ default_connection }}</td>
+    </tr>
+    <tr>
+        <th>Logging</th>
+        <td>{{ logging ? 'enabled' : 'disabled' }}</td>
+    </tr>
+    <tr>
+        <th>Propel path</th>
+        <td>{{ path }}</td>
+    </tr>
+    <tr>
+        <th>Phing path</th>
+        <td>{{ phing_path }}</td>
+    </tr>
     </tbody>
 </table>
 
@@ -30,35 +29,39 @@
 
 <table summary="Current Propel connections">
     <thead>
-        <tr>
-            <th>Connection name</th>
-            <th colspan="2" style="text-align: center;">Configuration parameters</th>
-        </tr>
+    <tr>
+        <th>Connection name</th>
+        <th colspan="2" style="text-align: center;">Configuration parameters</th>
+    </tr>
     </thead>
     <tbody>
-        {% for name, config in configuration.datasources %}
+    {% for name, config in configuration %}
         <tr>
             <th rowspan="5" style="vertical-align: top;">
                 {{ name }}
             </th>
             <th>Adapter</th>
-            <td>{{ config.adapter }}</td>
+            <td>{{ config.adapter|default('N/A') }}</td>
         </tr>
         <tr>
             <th>DSN</th>
-            <td>{{ config.connection.dsn }}</td>
+            <td>{{ config.dsn|default('N/A') }}</td>
         </tr>
         <tr>
             <th>Class</th>
-            <td>{{ config.connection.classname }}</td>
+            <td>{{ config.classname|default('N/A') }}</td>
         </tr>
         <tr>
             <th>Options</th>
             <td>
                 <ul>
-                    {% for key, value in config.connection.options %}
-                    <li>{{ key }} : {{ value }}</li>
-                    {% endfor %}
+                    {% if config.options is defined and config.options is iterable %}
+                        {% for key, value in config.options %}
+                            <li>{{ key }} : {% if value is iterable %}{{ value|json_encode }}{% else %}{{ value }}{% endif %}</li>
+                        {% endfor %}
+                    {% else %}
+                        <li>No options available</li>
+                    {% endif %}
                 </ul>
             </td>
         </tr>
@@ -66,12 +69,16 @@
             <th>Attributes</th>
             <td>
                 <ul>
-                    {% for key, value in config.connection.attributes %}
-                    <li>{{ key }} : {{ value }}</li>
-                    {% endfor %}
+                    {% if config.attributes is defined and config.attributes is iterable %}
+                        {% for key, value in config.attributes %}
+                            <li>{{ key }} : {% if value is iterable %}{{ value|json_encode }}{% else %}{{ value }}{% endif %}</li>
+                        {% endfor %}
+                    {% else %}
+                        <li>No attributes available</li>
+                    {% endif %}
                 </ul>
             </td>
         </tr>
-        {% endfor %}
+    {% endfor %}
     </tbody>
 </table>
