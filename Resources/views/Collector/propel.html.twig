@@ -79,7 +79,7 @@
                         <code>{{ query.sql|format_sql }}</code>
                         {% if app.request.query.has('query') and app.request.query.get('query') == i %}
                             <div class="SQLExplain">
-                                {{ render(controller('@Propel/Panel/explain', {
+                                {{ render(controller('PropelBundle:Panel:explain', {
                                     'token': token,
                                     'panel': 'propel',
                                     'query': app.request.query.get('query'),
