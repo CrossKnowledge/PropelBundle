@@ -1,4 +1,4 @@
-{% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
 
 {% block toolbar %}
 {% if collector.querycount %}
@@ -14,7 +14,7 @@
 
     {% set text %}{% endset %}
 
-    {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { link: profiler_url } %}
+    {% include '@WebProfiler/Profiler/toolbar_item.html.twig' with { link: profiler_url } %}
 {% endif %}
 {% endblock %}
 
@@ -73,33 +73,33 @@
             <tr><td>No queries.</td></tr>
         {% else %}
             {% for i, query in collector.queries %}
-            <tr>
-                <td>
-                    <a name="propel-query-{{ i }}" ></a>
-                    <code>{{ query.sql|format_sql }}</code>
-                    {% if app.request.query.has('query') and app.request.query.get('query') == i %}
-                        <div class="SQLExplain">
-                        {% render controller('PropelBundle:Panel:explain', {
-                            'token': token,
-                            'panel': 'propel',
-                            'query': app.request.query.get('query'),
-                            'connection': app.request.query.get('connection')
-                        }) %}
-                        </div>
-                    {% endif %}
-                    <div class="SQLInfo">
-                        Time: {{ query.time }} - Memory: {{ query.memory }} - Connection: {{ query.connection }}
-
-                        {% if app.request.query.get('query', -1) != i %}
-                            - <a href="{{ path('_profiler', {'panel': 'propel', 'token': token, 'connection': query.connection, 'query': i}) }}#propel-query-{{ i }}">Explain the query</a>
+                <tr>
+                    <td>
+                        <a name="propel-query-{{ i }}" ></a>
+                        <code>{{ query.sql|format_sql }}</code>
+                        {% if app.request.query.has('query') and app.request.query.get('query') == i %}
+                            <div class="SQLExplain">
+                                {{ render(controller('PropelBundle:Panel:explain', {
+                                    'token': token,
+                                    'panel': 'propel',
+                                    'query': app.request.query.get('query'),
+                                    'connection': app.request.query.get('connection')
+                                })) }}
+                            </div>
                         {% endif %}
-                    </div>
-                </td>
-            </tr>
+                        <div class="SQLInfo">
+                            Time: {{ query.time }} - Memory: {{ query.memory }} - Connection: {{ query.connection }}
+
+                            {% if app.request.query.get('query', -1) != i %}
+                                - <a href="{{ path('_profiler', {'panel': 'propel', 'token': token, 'connection': query.connection, 'query': i}) }}#propel-query-{{ i }}">Explain the query</a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
             {% endfor %}
         {% endif %}
         </tbody>
     </table>
 
-    {% render controller('PropelBundle:Panel:configuration') %}
+    {{ render(controller('PropelBundle:Panel:configuration')) }}
 {% endblock %}

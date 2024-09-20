@@ -11,6 +11,8 @@
         <tr>
             <th>Default connection</th>
             <td>{{ default_connection }}</td>
+
+        </tr>
         <tr>
             <th>Logging</th>
             <td>{{ logging ? 'enabled' : 'disabled' }}</td>
@@ -57,7 +59,7 @@
             <td>
                 <ul>
                     {% for key, value in config.connection.options %}
-                    <li>{{ key }} : {{ value }}</li>
+                        <li>{{ key }} : {% if value is iterable %}{{ value|json_encode }}{% else %}{{ value }}{% endif %}</li>
                     {% endfor %}
                 </ul>
             </td>
@@ -67,7 +69,7 @@
             <td>
                 <ul>
                     {% for key, value in config.connection.attributes %}
-                    <li>{{ key }} : {{ value }}</li>
+                        <li>{{ key }} : {% if value is iterable %}{{ value|json_encode }}{% else %}{{ value }}{% endif %}</li>
                     {% endfor %}
                 </ul>
             </td>
