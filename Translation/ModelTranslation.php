@@ -238,6 +238,11 @@ class ModelTranslation implements DumperInterface, LoaderInterface, ResourceInte
         return $this->query->getTableMap()->getColumn($this->getColumnname($identifier))->getPhpName();
     }
 
+    public function __serialize()
+    {
+        return $this->serialize();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -247,6 +252,11 @@ class ModelTranslation implements DumperInterface, LoaderInterface, ResourceInte
             $this->className,
             $this->options,
         ));
+    }
+
+    public function __unserialize($serialized)
+    {
+        return $this->unserialize($serialized);
     }
 
     /**

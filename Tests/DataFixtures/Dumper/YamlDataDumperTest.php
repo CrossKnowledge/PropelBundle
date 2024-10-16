@@ -42,11 +42,11 @@ class YamlDataDumperTest extends TestCase
         $expected = <<<YAML
 Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\BookAuthor:
     BookAuthor_1:
-        id: '1'
+        id: 1
         name: 'A famous one'
 Propel\Bundle\PropelBundle\Tests\Fixtures\DataFixtures\Loader\Book:
     Book_1:
-        id: '1'
+        id: 1
         name: 'An important one'
         author_id: BookAuthor_1
         complementary_infos: !php/object 'O:8:"stdClass":1:{s:15:"first_word_date";s:10:"2012-01-01";}'

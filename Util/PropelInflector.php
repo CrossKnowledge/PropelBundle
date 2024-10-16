@@ -25,6 +25,6 @@ class PropelInflector
      */
     public static function camelize($word)
     {
-        return lcfirst(str_replace(" ", "", ucwords(strtr($word, "_-", "  "))));
+        return lcfirst(str_replace(" ", "", ucwords(strtr($word ?? '', "_-", "  "))));
     }
 }
