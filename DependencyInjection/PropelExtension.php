@@ -9,6 +9,7 @@
  */
 namespace Propel\Bundle\PropelBundle\DependencyInjection;
 
+use InvalidArgumentException;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -25,8 +26,10 @@ class PropelExtension extends Extension
     /**
      * Loads the Propel configuration.
      *
-     * @param array            $configs   An array of configuration settings
-     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @param array $configs  An array of configuration settings
+     * @param ContainerBuilder $container  A ContainerBuilder instance
+     *
+     * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -35,23 +38,23 @@ class PropelExtension extends Extension
         $config = $processor->processConfiguration($configuration, $configs);
 
         // Composer
-        if (file_exists($propelPath = $container->getParameter('kernel.root_dir') . '/../vendor/propel/propel1')) {
+        if (file_exists($propelPath = $container->getParameter('kernel.project_dir') . '/vendor/propel/propel1')) {
             $container->setParameter('propel.path', $propelPath);
         }
-        if (file_exists($phingPath = $container->getParameter('kernel.root_dir') . '/../vendor/phing/phing/classes')) {
+        if (file_exists($phingPath = $container->getParameter('kernel.project_dir') . '/vendor/phing/phing/classes')) {
             $container->setParameter('propel.phing_path', $phingPath);
         }
 
         if (isset($config['path'])) {
             $container->setParameter('propel.path', $config['path']);
         } elseif (!$container->hasParameter('propel.path')) {
-            throw new \InvalidArgumentException('PropelBundle expects a "path" parameter that must contain the absolute path to the Propel ORM vendor library. The "path" parameter must be defined under the "propel" root node in your configuration.');
+            throw new InvalidArgumentException('PropelBundle expects a "path" parameter that must contain the absolute path to the Propel ORM vendor library. The "path" parameter must be defined under the "propel" root node in your configuration.');
         }
 
         if (isset($config['phing_path'])) {
             $container->setParameter('propel.phing_path', $config['phing_path']);
         } elseif (!$container->hasParameter('propel.phing_path')) {
-                throw new \InvalidArgumentException('PropelBundle expects a "phing_path" parameter that must contain the absolute path to the Phing vendor library. The "phing_path" parameter must be defined under the "propel" root node in your configuration.');
+            throw new InvalidArgumentException('PropelBundle expects a "phing_path" parameter that must contain the absolute path to the Phing vendor library. The "phing_path" parameter must be defined under the "propel" root node in your configuration.');
         }
 
         if (isset($config['logging']) && $config['logging']) {
@@ -64,7 +67,7 @@ class PropelExtension extends Extension
 
         // Load services
         if (!$container->hasDefinition('propel')) {
-            $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+            $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
             $loader->load('propel.xml');
             $loader->load('converters.xml');
             $loader->load('console.xml');
@@ -74,7 +77,7 @@ class PropelExtension extends Extension
         if (isset($config['build_properties']) && is_array($config['build_properties'])) {
             $buildProperties = $config['build_properties'];
         } else {
-            $buildProperties = array();
+            $buildProperties = [];
         }
 
         // behaviors
@@ -84,7 +87,7 @@ class PropelExtension extends Extension
             }
         }
 
-        $container->getDefinition('propel.build_properties')->setArguments(array($buildProperties));
+        $container->getDefinition('propel.build_properties')->setArguments([$buildProperties]);
 
         if (!empty($config['dbal'])) {
             $this->dbalLoad($config['dbal'], $container);
@@ -94,8 +97,8 @@ class PropelExtension extends Extension
     /**
      * Loads the DBAL configuration.
      *
-     * @param array            $config    An array of configuration settings
-     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @param array $config  An array of configuration settings
+     * @param ContainerBuilder $container  A ContainerBuilder instance
      */
     protected function dbalLoad(array $config, ContainerBuilder $container)
     {
@@ -108,17 +111,17 @@ class PropelExtension extends Extension
         $container->setParameter('propel.dbal.default_connection', $connectionName);
 
         if (0 === count($config['connections'])) {
-            $config['connections'] = array($connectionName => $config);
+            $config['connections'] = [$connectionName => $config];
         }
 
-        $c = array();
+        $c = [];
         foreach ($config['connections'] as $name => $conf) {
             $c['datasources'][$name]['adapter'] = $conf['driver'];
             if (!empty($conf['slaves'])) {
                 $c['datasources'][$name]['slaves']['connection'] = $conf['slaves'];
             }
 
-            foreach (array('dsn', 'user', 'password', 'classname', 'options', 'attributes', 'settings', 'model_paths') as $att) {
+            foreach (['dsn','user','password','classname','options','attributes','settings','model_paths'] as $att) {
                 if (isset($conf[$att])) {
                     $c['datasources'][$name]['connection'][$att] = $conf[$att];
                 }
@@ -130,7 +133,7 @@ class PropelExtension extends Extension
             $c['datasources']['default'] = $connectionName;
         }
 
-        $container->getDefinition('propel.configuration')->setArguments(array($c));
+        $container->getDefinition('propel.configuration')->setArguments([$c]);
     }
 
     public function getConfiguration(array $config, ContainerBuilder $container)
@@ -145,12 +148,11 @@ class PropelExtension extends Extension
      */
     public function getXsdValidationBasePath()
     {
-        return __DIR__.'/../Resources/config/schema';
+        return __DIR__ . '/../Resources/config/schema';
     }
 
     /**
      * Returns the recommended alias to use in XML.
-     *
      * This alias is also the mandatory prefix to use when using YAML.
      *
      * @return string The alias
