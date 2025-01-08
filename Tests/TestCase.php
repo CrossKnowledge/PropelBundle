@@ -34,7 +34,7 @@ class TestCase extends PHPUnitTestCase
     {
         return new ContainerBuilder(new ParameterBag([
             'kernel.debug' => false,
-            'kernel.root_dir' => __DIR__ . '/../',
+            'kernel.project_dir' => __DIR__,
         ]));
     }
 

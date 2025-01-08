@@ -31,7 +31,7 @@ propel:
         attributes:           {}
 ```
 
-The recommended way to fill in these information is to use parameters:
+The recommended way to fill in this information is to use parameters:
 
 ``` yaml
 # app/config/config*.yml
@@ -45,7 +45,7 @@ propel:
         attributes:           {}
 ```
 
-## Configure Multiple Connection ##
+## Configure Multiple Connection ##
 
 If you have more than one connection, or want to use a named connection, the configuration
 will look like:
@@ -118,7 +118,7 @@ propel:
 ```
 
 `options`, `attributes` and `settings` are parts of the runtime configuration. See [Runtime Configuration File](http://www.propelorm.org/reference/runtime-configuration.html) documentation for more explanation.
-`model_paths` can be defined to speed up searching for model data. By default it searches in the whole project from project root.
+`model_paths` can be defined to speed up searching for model data. By default, it searches in the whole project from project root.
 
 ## Logging ##
 
