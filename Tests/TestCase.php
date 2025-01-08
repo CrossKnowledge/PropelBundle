@@ -7,9 +7,10 @@
  *
  * @license    MIT License
  */
+
 namespace Propel\Bundle\PropelBundle\Tests;
 
-use \PHPUnit\Framework\TestCase as PHPUnitTestCase;
+use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
@@ -31,10 +32,10 @@ class TestCase extends PHPUnitTestCase
 
     public function getContainer()
     {
-        return new ContainerBuilder(new ParameterBag(array(
-            'kernel.debug'      => false,
-            'kernel.root_dir'   => __DIR__ . '/../',
-        )));
+        return new ContainerBuilder(new ParameterBag([
+            'kernel.debug' => false,
+            'kernel.project_dir' => __DIR__,
+        ]));
     }
 
     protected function loadPropelQuickBuilder()
