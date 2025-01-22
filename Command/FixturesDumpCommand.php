@@ -10,6 +10,7 @@
 namespace Propel\Bundle\PropelBundle\Command;
 
 use Propel\Bundle\PropelBundle\DataFixtures\Dumper\YamlDataDumper;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -58,7 +59,7 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        list($name, $defaultConfig) = $this->getConnection($input, $output);
+        [$name, $defaultConfig] = $this->getConnection($input, $output);
         $fixtureDir = $input->getOption('dir') ? $input->getOption('dir') : $this->defaultFixturesDir;
 
         $path = realpath($this->getApplication()->getKernel()->getProjectDir() . '/../') . '/' . $fixtureDir;
@@ -85,11 +86,11 @@ EOT
                 '',
                 $e->getMessage()), 'fg=white;bg=red');
 
-            return false;
+            return Command::FAILURE;
         }
 
         $this->writeNewFile($output, $filename);
 
-        return true;
+        return Command::SUCCESS;
     }
 }

@@ -9,6 +9,7 @@
  */
 namespace Propel\Bundle\PropelBundle\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -57,11 +58,11 @@ EOT
                 if (false === $this->askConfirmation($output, 'Are you sure ? (y/n) ', false)) {
                     $output->writeln('Aborted, nice decision !');
 
-                    return -2;
+                    return Command::FAILURE;
                 }
             }
 
-            list($name, $config) = $this->getConnection($input, $output);
+            [$name, $config] = $this->getConnection($input, $output);
             $dbName = $this->parseDbName($config['connection']['dsn']);
 
             if (null === $dbName) {

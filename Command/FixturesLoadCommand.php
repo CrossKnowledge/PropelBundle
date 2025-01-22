@@ -11,6 +11,7 @@ namespace Propel\Bundle\PropelBundle\Command;
 
 use Propel\Bundle\PropelBundle\DataFixtures\Loader\XmlDataLoader;
 use Propel\Bundle\PropelBundle\DataFixtures\Loader\YamlDataLoader;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -153,30 +154,31 @@ EOT
     /**
      * Load fixtures
      *
-     * @param  \Symfony\Component\Console\Input\InputInterface   $input
-     * @param  \Symfony\Component\Console\Output\OutputInterface $output
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param null $type
      * @return void
      */
     protected function loadFixtures(InputInterface $input, OutputInterface $output, $type = null)
     {
         if (null === $type) {
-            return;
+            return Command::INVALID;
         }
 
         $datas = $this->getFixtureFiles($type);
 
         if (count(iterator_to_array($datas)) === 0) {
-            return -1;
+            return Command::FAILURE;
         }
 
-        list($name, $defaultConfig) = $this->getConnection($input, $output);
+        [$name, $defaultConfig] = $this->getConnection($input, $output);
 
         if ('yml' === $type) {
             $loader = new YamlDataLoader($this->getApplication()->getKernel()->getProjectDir(), $this->getContainer());
         } elseif ('xml' === $type) {
             $loader = new XmlDataLoader($this->getApplication()->getKernel()->getProjectDir());
         } else {
-            return;
+            return Command::FAILURE;
         }
 
         try {
@@ -187,19 +189,19 @@ EOT
                 '',
                 $e->getMessage()), 'fg=white;bg=red');
 
-            return false;
+            return Command::FAILURE;
         }
 
         $output->writeln(sprintf('<comment>%s</comment> %s fixtures file%s loaded.', $nb, strtoupper($type), $nb > 1 ? 's' : ''));
 
-        return true;
+        return Command::SUCCESS;
     }
 
     /**
      * Load SQL fixtures
      *
-     * @param  \Symfony\Component\Console\Input\InputInterface   $input
-     * @param  \Symfony\Component\Console\Output\OutputInterface $output
+     * @param  InputInterface $input
+     * @param OutputInterface $output
      * @return void
      */
     protected function loadSqlFixtures(InputInterface $input, OutputInterface $output)
@@ -209,7 +211,7 @@ EOT
 
         $this->prepareCache($tmpdir);
 
-        list($name, $defaultConfig) = $this->getConnection($input, $output);
+        [$name, $defaultConfig] = $this->getConnection($input, $output);
 
         // Create a "sqldb.map" file
         $sqldbContent = '';
@@ -221,19 +223,19 @@ EOT
         }
 
         if ('' === $sqldbContent) {
-            return -1;
+            return Command::FAILURE;
         }
 
         $sqldbFile = $tmpdir . '/fixtures/sqldb.map';
         file_put_contents($sqldbFile, $sqldbContent);
 
         if (!$this->insertSql($defaultConfig, $tmpdir . '/fixtures', $tmpdir, $output)) {
-            return -1;
+            return Command::FAILURE;
         }
 
         $this->filesystem->remove($tmpdir);
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**
@@ -272,10 +274,10 @@ EOT
         } else {
             $this->writeTaskError($output, 'insert-sql', false);
 
-            return false;
+            return Command::FAILURE;
         }
 
-        return true;
+        return Command::SUCCESS;
     }
 
     /**

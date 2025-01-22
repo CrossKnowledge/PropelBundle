@@ -9,6 +9,7 @@
  */
 namespace Propel\Bundle\PropelBundle\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -71,12 +72,12 @@ EOT
                 if (false === $this->askConfirmation($output, 'Are you sure ? (y/n) ', false)) {
                     $output->writeln('<info>Aborted, nice decision !</info>');
 
-                    return -2;
+                    return Command::INVALID;
                 }
             }
 
             try {
-                list($name, $config) = $this->getConnection($input, $output);
+                [$name, $config] = $this->getConnection($input, $output);
                 $connection = \Propel::getConnection($name);
                 $adapter = \Propel::getDB($name);
 
