@@ -47,12 +47,12 @@ EOT
     {
         if (true === $this->callPhing('diff')) {
             $this->writeSummary($output, 'propel-sql-diff');
-        } elseif ( strpos( $this->buffer, 'Uncommitted migrations have been found' ) ) {
-            $this->writeSection($output, array(
+        } elseif (strpos($this->buffer, 'Uncommitted migrations have been found')) {
+            $this->writeSection($output, [
                 '[Propel] Error',
                 '',
-                'Uncommitted migrations have been found. You should either execute or delete them before rerunning the propel:migration:generate-diff command.'
-            ), 'fg=white;bg=red');
+                'Uncommitted migrations have been found. You should either execute or delete them before rerunning the propel:migration:generate-diff command.',
+            ], 'fg=white;bg=red');
         } else {
             $this->writeTaskError($output, 'propel-sql-diff');
         }

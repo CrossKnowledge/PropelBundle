@@ -90,7 +90,7 @@ EOT
         } catch (\Exception $e) {
             return $this->writeSection(
                 $output,
-                array('[Propel] Exception', '', $e),
+                ['[Propel] Exception', '', $e],
                 'fg=white;bg=red'
             );
         }

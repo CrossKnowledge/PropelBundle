@@ -125,27 +125,27 @@ EOT
         }
 
         if (!$this->absoluteFixturesPath && !file_exists($this->absoluteFixturesPath)) {
-            return $this->writeSection($output, array(
+            return $this->writeSection($output, [
                 'The fixtures directory "' . $this->absoluteFixturesPath . '" does not exist.'
-            ), 'fg=white;bg=red');
+            ], 'fg=white;bg=red');
         }
 
         $noOptions = (!$input->getOption('xml') && !$input->getOption('sql') && !$input->getOption('yml'));
 
         if ($input->getOption('sql') || $noOptions) {
-            if (-1 === $this->loadSqlFixtures($input, $output)) {
+            if (Command::FAILURE === $this->loadSqlFixtures($input, $output)) {
                 $output->writeln('No <info>SQL</info> fixtures found.');
             }
         }
 
         if ($input->getOption('xml') || $noOptions) {
-            if (-1 === $this->loadFixtures($input, $output, 'xml')) {
+            if (Command::FAILURE === $this->loadFixtures($input, $output, 'xml')) {
                 $output->writeln('No <info>XML</info> fixtures found.');
             }
         }
 
         if ($input->getOption('yml') || $noOptions) {
-            if (-1 === $this->loadFixtures($input, $output, 'yml')) {
+            if (Command::FAILURE === $this->loadFixtures($input, $output, 'yml')) {
                 $output->writeln('No <info>YML</info> fixtures found.');
             }
         }
@@ -157,7 +157,7 @@ EOT
      * @param InputInterface $input
      * @param OutputInterface $output
      * @param null $type
-     * @return void
+     * @return int
      */
     protected function loadFixtures(InputInterface $input, OutputInterface $output, $type = null)
     {
@@ -184,10 +184,10 @@ EOT
         try {
             $nb = $loader->load($datas, $name);
         } catch (\Exception $e) {
-            $this->writeSection($output, array(
+            $this->writeSection($output, [
                 '[Propel] Exception',
                 '',
-                $e->getMessage()), 'fg=white;bg=red');
+                $e->getMessage()], 'fg=white;bg=red');
 
             return Command::FAILURE;
         }
@@ -202,7 +202,7 @@ EOT
      *
      * @param  InputInterface $input
      * @param OutputInterface $output
-     * @return void
+     * @return int
      */
     protected function loadSqlFixtures(InputInterface $input, OutputInterface $output)
     {

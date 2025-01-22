@@ -81,10 +81,11 @@ EOT
         try {
             $dumper->dump($filename, $name);
         } catch (\Exception $e) {
-            $this->writeSection($output, array(
+            $this->writeSection($output, [
                 '[Propel] Exception',
                 '',
-                $e->getMessage()), 'fg=white;bg=red');
+                $e->getMessage(),
+            ], 'fg=white;bg=red');
 
             return Command::FAILURE;
         }

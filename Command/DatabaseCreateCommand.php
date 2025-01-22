@@ -57,11 +57,11 @@ class DatabaseCreateCommand extends AbstractCommand
 
             $output->writeln(sprintf('<info>Database <comment>%s</comment> has been created.</info>', $dbName));
         } catch (\Exception $e) {
-            $this->writeSection($output, array(
+            $this->writeSection($output, [
                 '[Propel] Exception caught',
                 '',
-                $e->getMessage()
-            ), 'fg=white;bg=red');
+                $e->getMessage(),
+            ], 'fg=white;bg=red');
         }
     }
 
