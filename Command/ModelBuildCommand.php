@@ -9,6 +9,7 @@
  */
 namespace Propel\Bundle\PropelBundle\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -55,9 +56,13 @@ EOT
                     $schemaDetails['bundle'],
                     $schemaDetails['basename']
                 ));
+
+                return Command::SUCCESS;
             }
         } else {
             $this->writeTaskError($output, 'om');
+
+            return Command::FAILURE;
         }
     }
 }

@@ -69,8 +69,12 @@ EOT
             if ($this->askConfirmation($output, "<question>Do you want me to create it for you ?</question> [Yes]")) {
                 $fs = new Filesystem();
                 $fs->mkdir($path);
+
+                return Command::SUCCESS;
             } else {
-                throw new \IOException(sprintf('Unable to find the %s folder', $path));
+                $output->writeln('Unable to find the %s folder', $path);
+
+                return Command::FAILURE;
             }
         }
 

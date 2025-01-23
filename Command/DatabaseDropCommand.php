@@ -57,8 +57,6 @@ EOT
 
                 if (false === $this->askConfirmation($output, 'Are you sure ? (y/n) ', false)) {
                     $output->writeln('Aborted, nice decision !');
-
-                    return Command::FAILURE;
                 }
             }
 
@@ -66,7 +64,9 @@ EOT
             $dbName = $this->parseDbName($config['connection']['dsn']);
 
             if (null === $dbName) {
-                return $output->writeln('<error>No database name found.</error>');
+                $output->writeln('<error>No database name found.</error>');
+
+                return Command::FAILURE;
             } else {
                 $query  = 'DROP DATABASE '. $dbName .';';
             }
@@ -77,15 +77,21 @@ EOT
                 $statement->execute();
 
                 $output->writeln(sprintf('<info>Database <comment>%s</comment> has been dropped.</info>', $dbName));
+
+                return Command::SUCCESS;
             } catch (\Exception $e) {
                 $this->writeSection($output, [
                     '[Propel] Exception caught',
                     '',
                     $e->getMessage(),
                 ], 'fg=white;bg=red');
+
+                return Command::FAILURE;
             }
         } else {
             $output->writeln('<error>You have to use the "--force" option to drop the database.</error>');
+
+            return Command::FAILURE;
         }
     }
 }

@@ -9,6 +9,7 @@
  */
 namespace Propel\Bundle\PropelBundle\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -49,7 +50,7 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        list($name, $defaultConfig) = $this->getConnection($input, $output);
+        [$name, $defaultConfig] = $this->getConnection($input, $output);
 
         $ret = $this->callPhing('reverse', array(
             'propel.project'            => $name,
@@ -71,11 +72,17 @@ EOT
                     '',
                     sprintf('>>  <info>File+</info>    %s', $destFile),
                 ));
+
+                return Command::SUCCESS;
             } else {
                 $output->writeln(array('', 'No generated files.'));
+
+                return Command::FAILURE;
             }
         } else {
             $this->writeTaskError($output, 'reverse');
+
+            return Command::FAILURE;
         }
     }
 }

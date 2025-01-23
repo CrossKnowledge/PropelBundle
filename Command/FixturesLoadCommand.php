@@ -125,9 +125,11 @@ EOT
         }
 
         if (!$this->absoluteFixturesPath && !file_exists($this->absoluteFixturesPath)) {
-            return $this->writeSection($output, [
+            $this->writeSection($output, [
                 'The fixtures directory "' . $this->absoluteFixturesPath . '" does not exist.'
             ], 'fg=white;bg=red');
+
+            return Command::FAILURE;
         }
 
         $noOptions = (!$input->getOption('xml') && !$input->getOption('sql') && !$input->getOption('yml'));
@@ -135,18 +137,24 @@ EOT
         if ($input->getOption('sql') || $noOptions) {
             if (Command::FAILURE === $this->loadSqlFixtures($input, $output)) {
                 $output->writeln('No <info>SQL</info> fixtures found.');
+
+                return Command::FAILURE;
             }
         }
 
         if ($input->getOption('xml') || $noOptions) {
             if (Command::FAILURE === $this->loadFixtures($input, $output, 'xml')) {
                 $output->writeln('No <info>XML</info> fixtures found.');
+
+                return Command::FAILURE;
             }
         }
 
         if ($input->getOption('yml') || $noOptions) {
             if (Command::FAILURE === $this->loadFixtures($input, $output, 'yml')) {
                 $output->writeln('No <info>YML</info> fixtures found.');
+
+                return Command::FAILURE;
             }
         }
     }

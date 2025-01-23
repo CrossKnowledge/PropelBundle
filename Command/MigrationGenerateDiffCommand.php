@@ -9,6 +9,7 @@
  */
 namespace Propel\Bundle\PropelBundle\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -47,14 +48,20 @@ EOT
     {
         if (true === $this->callPhing('diff')) {
             $this->writeSummary($output, 'propel-sql-diff');
+
+            return Command::SUCCESS;
         } elseif (strpos($this->buffer, 'Uncommitted migrations have been found')) {
             $this->writeSection($output, [
                 '[Propel] Error',
                 '',
                 'Uncommitted migrations have been found. You should either execute or delete them before rerunning the propel:migration:generate-diff command.',
             ], 'fg=white;bg=red');
+
+            return Command::FAILURE;
         } else {
             $this->writeTaskError($output, 'propel-sql-diff');
+
+            return Command::FAILURE;
         }
     }
 }
