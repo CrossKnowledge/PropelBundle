@@ -11,6 +11,7 @@ namespace Propel\Bundle\PropelBundle\Command;
 
 use Propel\Bundle\PropelBundle\DataFixtures\Loader\XmlDataLoader;
 use Propel\Bundle\PropelBundle\DataFixtures\Loader\YamlDataLoader;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -124,70 +125,73 @@ EOT
         }
 
         if (!$this->absoluteFixturesPath && !file_exists($this->absoluteFixturesPath)) {
-            return $this->writeSection($output, array(
+            $this->writeSection($output, [
                 'The fixtures directory "' . $this->absoluteFixturesPath . '" does not exist.'
-            ), 'fg=white;bg=red');
+            ], 'fg=white;bg=red');
+
+            return Command::FAILURE;
         }
 
         $noOptions = (!$input->getOption('xml') && !$input->getOption('sql') && !$input->getOption('yml'));
 
         if ($input->getOption('sql') || $noOptions) {
-            if (-1 === $this->loadSqlFixtures($input, $output)) {
+            if (!$this->loadSqlFixtures($input, $output)) {
                 $output->writeln('No <info>SQL</info> fixtures found.');
             }
         }
 
         if ($input->getOption('xml') || $noOptions) {
-            if (-1 === $this->loadFixtures($input, $output, 'xml')) {
+            if (!$this->loadFixtures($input, $output, 'xml')) {
                 $output->writeln('No <info>XML</info> fixtures found.');
             }
         }
 
         if ($input->getOption('yml') || $noOptions) {
-            if (-1 === $this->loadFixtures($input, $output, 'yml')) {
+            if (!$this->loadFixtures($input, $output, 'yml')) {
                 $output->writeln('No <info>YML</info> fixtures found.');
             }
         }
+
+        return Command::SUCCESS;
     }
 
     /**
      * Load fixtures
      *
-     * @param  \Symfony\Component\Console\Input\InputInterface   $input
-     * @param  \Symfony\Component\Console\Output\OutputInterface $output
-     * @return void
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param null $type
+     * @return bool
      */
     protected function loadFixtures(InputInterface $input, OutputInterface $output, $type = null)
     {
         if (null === $type) {
-            return;
+            return true;
         }
 
         $datas = $this->getFixtureFiles($type);
 
         if (count(iterator_to_array($datas)) === 0) {
-            return -1;
+            return false;
         }
 
-        list($name, $defaultConfig) = $this->getConnection($input, $output);
+        [$name, $defaultConfig] = $this->getConnection($input, $output);
 
         if ('yml' === $type) {
             $loader = new YamlDataLoader($this->getApplication()->getKernel()->getProjectDir(), $this->getContainer());
         } elseif ('xml' === $type) {
             $loader = new XmlDataLoader($this->getApplication()->getKernel()->getProjectDir());
         } else {
-            return;
+            return true;
         }
 
         try {
             $nb = $loader->load($datas, $name);
         } catch (\Exception $e) {
-            $this->writeSection($output, array(
+            $this->writeSection($output, [
                 '[Propel] Exception',
                 '',
-                $e->getMessage()), 'fg=white;bg=red');
-
-            return false;
+                $e->getMessage()], 'fg=white;bg=red');
         }
 
         $output->writeln(sprintf('<comment>%s</comment> %s fixtures file%s loaded.', $nb, strtoupper($type), $nb > 1 ? 's' : ''));
@@ -198,9 +202,9 @@ EOT
     /**
      * Load SQL fixtures
      *
-     * @param  \Symfony\Component\Console\Input\InputInterface   $input
-     * @param  \Symfony\Component\Console\Output\OutputInterface $output
-     * @return void
+     * @param  InputInterface $input
+     * @param OutputInterface $output
+     * @return bool
      */
     protected function loadSqlFixtures(InputInterface $input, OutputInterface $output)
     {
@@ -209,7 +213,7 @@ EOT
 
         $this->prepareCache($tmpdir);
 
-        list($name, $defaultConfig) = $this->getConnection($input, $output);
+        [$name, $defaultConfig] = $this->getConnection($input, $output);
 
         // Create a "sqldb.map" file
         $sqldbContent = '';
@@ -221,19 +225,19 @@ EOT
         }
 
         if ('' === $sqldbContent) {
-            return -1;
+            return false;
         }
 
         $sqldbFile = $tmpdir . '/fixtures/sqldb.map';
         file_put_contents($sqldbFile, $sqldbContent);
 
         if (!$this->insertSql($defaultConfig, $tmpdir . '/fixtures', $tmpdir, $output)) {
-            return -1;
+            return false;
         }
 
         $this->filesystem->remove($tmpdir);
 
-        return 0;
+        return true;
     }
 
     /**

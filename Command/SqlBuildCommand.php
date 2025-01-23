@@ -9,6 +9,7 @@
  */
 namespace Propel\Bundle\PropelBundle\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -81,15 +82,24 @@ EOT
                 }
             }
 
-            $output->writeln(sprintf('<comment>%d</comment> <info>SQL file%s ha%s been generated.</info>',
-                $nbFiles, $nbFiles > 1 ? 's' : '', $nbFiles > 1 ? 've' : 's'
-            ));
+            $output->writeln(
+                sprintf(
+                    '<comment>%d</comment> <info>SQL file%s ha%s been generated.</info>',
+                    $nbFiles,
+                    $nbFiles > 1 ? 's' : '',
+                    $nbFiles > 1 ? 've' : 's'
+                )
+            );
+
+            return Command::SUCCESS;
         } else {
-            $this->writeSection($output, array(
+            $this->writeSection($output, [
                 '[Propel] Error',
                 '',
                 'An error has occured during the "propel:sql:build" command process. To get more details, run the command with the "--verbose" option.',
-            ), 'fg=white;bg=red');
+            ], 'fg=white;bg=red');
+
+            return Command::FAILURE;
         }
     }
 

@@ -9,6 +9,7 @@
  */
 namespace Propel\Bundle\PropelBundle\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -51,7 +52,7 @@ EOT
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($schemas = $this->getSchemasFromBundle($this->bundle)) {
+        if ($this->getSchemasFromBundle($this->bundle)) {
             $schemas = $this->getFinalSchemas($this->getContainer()->get('kernel'));
 
             $transformer = new \XmlToAppData(null, null, 'UTF-8');
@@ -60,8 +61,12 @@ EOT
                     $this->createFormTypeFromDatabase($this->bundle, $database, $input->getArgument('models'), $output, $input->getOption('force'));
                 }
             }
+
+            return Command::SUCCESS;
         } else {
             $output->writeln(sprintf('No <comment>*schemas.xml</comment> files found in bundle <comment>%s</comment>.', $this->bundle->getName()));
+
+            return Command::FAILURE;
         }
     }
 

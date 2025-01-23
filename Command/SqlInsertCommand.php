@@ -9,6 +9,7 @@
  */
 namespace Propel\Bundle\PropelBundle\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -59,7 +60,7 @@ EOT
             $manager->setConnections($connections);
 
             if ($input->getOption('connection')) {
-                list($name, $config) = $this->getConnection($input, $output);
+                [$name, $config] = $this->getConnection($input, $output);
                 $this->doSqlInsert($manager, $output, $name);
             } else {
                 foreach ($connections as $name => $config) {
@@ -68,8 +69,12 @@ EOT
                     $this->doSqlInsert($manager, $output, $name);
                 }
             }
+
+            return Command::SUCCESS;
         } else {
             $output->writeln('<error>You have to use --force to execute all SQL statements.</error>');
+
+            return Command::FAILURE;
         }
     }
 
@@ -90,7 +95,7 @@ EOT
         } catch (\Exception $e) {
             return $this->writeSection(
                 $output,
-                array('[Propel] Exception', '', $e),
+                ['[Propel] Exception', '', $e],
                 'fg=white;bg=red'
             );
         }
