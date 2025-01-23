@@ -161,7 +161,7 @@ EOT
      * @param InputInterface $input
      * @param OutputInterface $output
      * @param null $type
-     * @return int
+     * @return bool
      */
     protected function loadFixtures(InputInterface $input, OutputInterface $output, $type = null)
     {
@@ -182,7 +182,7 @@ EOT
         } elseif ('xml' === $type) {
             $loader = new XmlDataLoader($this->getApplication()->getKernel()->getProjectDir());
         } else {
-            return false;
+            return true;
         }
 
         try {
@@ -206,7 +206,7 @@ EOT
      *
      * @param  InputInterface $input
      * @param OutputInterface $output
-     * @return int
+     * @return bool
      */
     protected function loadSqlFixtures(InputInterface $input, OutputInterface $output)
     {
