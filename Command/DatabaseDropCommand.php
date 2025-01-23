@@ -57,6 +57,8 @@ EOT
 
                 if (false === $this->askConfirmation($output, 'Are you sure ? (y/n) ', false)) {
                     $output->writeln('Aborted, nice decision !');
+
+                    return Command::FAILURE;
                 }
             }
 

@@ -62,17 +62,14 @@ EOT
             if ($input->getOption('connection')) {
                 [$name, $config] = $this->getConnection($input, $output);
                 $this->doSqlInsert($manager, $output, $name);
-
-                return Command::SUCCESS;
             } else {
                 foreach ($connections as $name => $config) {
                     $output->writeln(sprintf('Use connection named <comment>%s</comment> in <comment>%s</comment> environment.',
                         $name, $this->getApplication()->getKernel()->getEnvironment()));
                     $this->doSqlInsert($manager, $output, $name);
-
-                    return Command::SUCCESS;
                 }
             }
+            return Command::SUCCESS;
         } else {
             $output->writeln('<error>You have to use --force to execute all SQL statements.</error>');
 

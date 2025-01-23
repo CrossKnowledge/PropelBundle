@@ -72,13 +72,10 @@ EOT
                     '',
                     sprintf('>>  <info>File+</info>    %s', $destFile),
                 ));
-
-                return Command::SUCCESS;
             } else {
                 $output->writeln(array('', 'No generated files.'));
-
-                return Command::FAILURE;
             }
+            return Command::SUCCESS;
         } else {
             $this->writeTaskError($output, 'reverse');
 

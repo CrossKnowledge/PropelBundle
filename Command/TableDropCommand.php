@@ -58,6 +58,8 @@ EOT
 
         if (!$input->getOption('force')) {
             $output->writeln('<error>You have to use the "--force" option to drop some tables.</error>');
+
+            return Command::FAILURE;
         }
 
         $nbTable = count($tablesToDelete);
@@ -74,6 +76,8 @@ EOT
 
             if (false === $this->askConfirmation($output, 'Are you sure ? (y/n) ', false)) {
                 $output->writeln('<info>Aborted, nice decision !</info>');
+
+                return Command::FAILURE;
             }
         }
 
@@ -90,9 +94,9 @@ EOT
             if ($nbTable) {
                 foreach ($tablesToDelete as $tableToDelete) {
                     if (!in_array($tableToDelete, $allTables)) {
-                        $output->writeln('Table %s doesn\'t exist in the database.', $tableToDelete);
-
-                        return Command::FAILURE;
+                        throw new \InvalidArgumentException(
+                            sprintf('Table %s doesn\'t exist in the database.', $tableToDelete)
+                        );
                     }
                 }
             } else {

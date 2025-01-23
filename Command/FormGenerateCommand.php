@@ -83,12 +83,8 @@ EOT
 
             if (!file_exists($file) || true === $force) {
                 $this->writeFormType($bundle, $table, $file, $force, $output);
-
-                return Command::SUCCESS;
             } else {
                 $output->writeln(sprintf('File <comment>%-60s</comment> exists, skipped. Try the <info>--force</info> option.', $this->getRelativeFileName($file)));
-
-                return Command::FAILURE;
             }
         }
     }

@@ -157,6 +157,8 @@ EOT
                 return Command::FAILURE;
             }
         }
+
+        return Command::SUCCESS;
     }
 
     /**
@@ -170,7 +172,7 @@ EOT
     protected function loadFixtures(InputInterface $input, OutputInterface $output, $type = null)
     {
         if (null === $type) {
-            return Command::INVALID;
+            return Command::SUCCESS;
         }
 
         $datas = $this->getFixtureFiles($type);
@@ -282,10 +284,10 @@ EOT
         } else {
             $this->writeTaskError($output, 'insert-sql', false);
 
-            return Command::FAILURE;
+            return false;
         }
 
-        return Command::SUCCESS;
+        return true;
     }
 
     /**
