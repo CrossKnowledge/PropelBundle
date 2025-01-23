@@ -60,9 +60,9 @@ EOT
                 foreach ($this->getDatabasesFromSchema($array[1], $transformer) as $database) {
                     $this->createFormTypeFromDatabase($this->bundle, $database, $input->getArgument('models'), $output, $input->getOption('force'));
                 }
-
-                return Command::SUCCESS;
             }
+
+            return Command::SUCCESS;
         } else {
             $output->writeln(sprintf('No <comment>*schemas.xml</comment> files found in bundle <comment>%s</comment>.', $this->bundle->getName()));
 

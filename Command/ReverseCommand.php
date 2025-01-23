@@ -75,6 +75,7 @@ EOT
             } else {
                 $output->writeln(array('', 'No generated files.'));
             }
+
             return Command::SUCCESS;
         } else {
             $this->writeTaskError($output, 'reverse');

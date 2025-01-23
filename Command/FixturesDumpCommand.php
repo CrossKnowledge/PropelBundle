@@ -70,7 +70,7 @@ EOT
                 $fs = new Filesystem();
                 $fs->mkdir($path);
             } else {
-                $output->writeln('Unable to find the %s folder', $path);
+                throw new \IOException(sprintf('Unable to find the %s folder', $path));
             }
         }
 

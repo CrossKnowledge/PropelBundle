@@ -57,6 +57,7 @@ EOT
                     $schemaDetails['basename']
                 ));
             }
+
             return Command::SUCCESS;
         } else {
             $this->writeTaskError($output, 'om');

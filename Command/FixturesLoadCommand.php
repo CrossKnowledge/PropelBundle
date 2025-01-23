@@ -188,7 +188,7 @@ EOT
         } elseif ('xml' === $type) {
             $loader = new XmlDataLoader($this->getApplication()->getKernel()->getProjectDir());
         } else {
-            return Command::FAILURE;
+            return false;
         }
 
         try {
@@ -233,7 +233,7 @@ EOT
         }
 
         if ('' === $sqldbContent) {
-            return Command::FAILURE;
+            return false;
         }
 
         $sqldbFile = $tmpdir . '/fixtures/sqldb.map';
