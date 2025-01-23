@@ -192,8 +192,6 @@ EOT
                 '[Propel] Exception',
                 '',
                 $e->getMessage()], 'fg=white;bg=red');
-
-            return false;
         }
 
         $output->writeln(sprintf('<comment>%s</comment> %s fixtures file%s loaded.', $nb, strtoupper($type), $nb > 1 ? 's' : ''));
