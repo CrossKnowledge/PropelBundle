@@ -135,26 +135,20 @@ EOT
         $noOptions = (!$input->getOption('xml') && !$input->getOption('sql') && !$input->getOption('yml'));
 
         if ($input->getOption('sql') || $noOptions) {
-            if (Command::FAILURE === $this->loadSqlFixtures($input, $output)) {
+            if (!$this->loadSqlFixtures($input, $output)) {
                 $output->writeln('No <info>SQL</info> fixtures found.');
-
-                return Command::FAILURE;
             }
         }
 
         if ($input->getOption('xml') || $noOptions) {
-            if (Command::FAILURE === $this->loadFixtures($input, $output, 'xml')) {
+            if (!$this->loadFixtures($input, $output, 'xml')) {
                 $output->writeln('No <info>XML</info> fixtures found.');
-
-                return Command::FAILURE;
             }
         }
 
         if ($input->getOption('yml') || $noOptions) {
-            if (Command::FAILURE === $this->loadFixtures($input, $output, 'yml')) {
+            if (!$this->loadFixtures($input, $output, 'yml')) {
                 $output->writeln('No <info>YML</info> fixtures found.');
-
-                return Command::FAILURE;
             }
         }
 
@@ -172,13 +166,13 @@ EOT
     protected function loadFixtures(InputInterface $input, OutputInterface $output, $type = null)
     {
         if (null === $type) {
-            return Command::SUCCESS;
+            return true;
         }
 
         $datas = $this->getFixtureFiles($type);
 
         if (count(iterator_to_array($datas)) === 0) {
-            return Command::FAILURE;
+            return false;
         }
 
         [$name, $defaultConfig] = $this->getConnection($input, $output);
@@ -199,12 +193,12 @@ EOT
                 '',
                 $e->getMessage()], 'fg=white;bg=red');
 
-            return Command::FAILURE;
+            return false;
         }
 
         $output->writeln(sprintf('<comment>%s</comment> %s fixtures file%s loaded.', $nb, strtoupper($type), $nb > 1 ? 's' : ''));
 
-        return Command::SUCCESS;
+        return true;
     }
 
     /**
@@ -240,12 +234,12 @@ EOT
         file_put_contents($sqldbFile, $sqldbContent);
 
         if (!$this->insertSql($defaultConfig, $tmpdir . '/fixtures', $tmpdir, $output)) {
-            return Command::FAILURE;
+            return false;
         }
 
         $this->filesystem->remove($tmpdir);
 
-        return Command::SUCCESS;
+        return true;
     }
 
     /**
