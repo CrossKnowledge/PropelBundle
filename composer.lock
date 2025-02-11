@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b7f2c419d9a5038c83cd56a73cf2a154",
+    "content-hash": "5cebe13e80efce07c626a22e18f4d6d0",
     "packages": [
         {
             "name": "phing/phing",
