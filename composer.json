@@ -38,7 +38,9 @@
     "symfony/translation": "^5.4",
     "symfony/string": "^5.4",
     "symfony/options-resolver": "^5.4",
-    "symfony/password-hasher": "^5.4"
+    "symfony/password-hasher": "^5.4",
+    "twig/twig": "^2.0",
+    "symfony/twig-bundle": "^5.4"
   },
   "require-dev": {
     "ext-sqlite3": "*",
