@@ -23,11 +23,31 @@ class YamlDataDumper extends AbstractDataDumper
      */
     protected function transformArrayToData($data)
     {
+        $processedData = $this->convertNumericStringsToIntegers($data);
         return Yaml::dump(
-            $data,
-            $inline = 3,
-            $indent = 4,
-            $flags = Yaml::DUMP_OBJECT | Yaml::DUMP_EXCEPTION_ON_INVALID_TYPE
+            $processedData,
+            3,
+            4,
+            Yaml::DUMP_OBJECT | Yaml::DUMP_EXCEPTION_ON_INVALID_TYPE
         );
+    }
+
+    private function convertNumericStringsToIntegers(array $data)
+    {
+        $result = [];
+
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $result[$key] = $this->convertNumericStringsToIntegers($value);
+            } else {
+                if (is_string($value) && is_numeric($value) && strpos($value, '.') === false) {
+                    $result[$key] = (int)$value;
+                } else {
+                    $result[$key] = $value;
+                }
+            }
+        }
+
+        return $result;
     }
 }

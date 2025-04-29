@@ -21,8 +21,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 /**
  * Wrapper for Propel commands.
  *
- * @author Fabien Potencier <fabien.potencier@symfony-project.com>
- * @author William DURAND <william.durand1@gmail.com>
+ * @autor Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @autor William DURAND <william.durand1@gmail.com>
  */
 abstract class AbstractCommand extends Command
 {
@@ -66,7 +66,7 @@ abstract class AbstractCommand extends Command
     protected $input;
 
     protected function getContainer() {
-        return \Framework::getInstance()->getSfContainer();
+        return $this->getApplication()->getKernel()->getContainer();
     }
 
     /**
@@ -684,3 +684,4 @@ EOT;
         return $args;
     }
 }
+

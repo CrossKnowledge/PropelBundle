@@ -4,35 +4,54 @@
   "keywords": ["propel", "orm", "persistence"],
   "type": "symfony-bundle",
   "license": "MIT",
-  "authors": [{
-    "name": "William Durand",
-    "email": "william.durand1@gmail.com"
-  }],
-
+  "authors": [
+    {
+      "name": "William Durand",
+      "email": "william.durand1@gmail.com"
+    }
+  ],
   "autoload": {
     "psr-4": { "Propel\\Bundle\\PropelBundle\\": "" },
     "files": ["autoload_aliases.php"],
     "exclude-from-classmap": [ "Tests/" ]
   },
-
   "require": {
-    "php": "^7.2|^8.3",
+    "php": "^7.2.5|^8.3",
     "propel/propel1": "1.6.19|dev-symfony-5",
-    "symfony/framework-bundle": "^3.0|^4.0|^5.0",
-    "symfony/symfony": "^4.0|^5.0"
+    "symfony/framework-bundle": "^5.4",
+    "symfony/flex": "^1.0",
+    "symfony/console": "^5.4",
+    "symfony/cache": "^5.4",
+    "symfony/config": "^5.4",
+    "symfony/dependency-injection": "^5.4",
+    "symfony/event-dispatcher": "^5.4",
+    "symfony/filesystem": "^5.4",
+    "symfony/http-kernel": "^5.4",
+    "symfony/finder": "^5.4",
+    "symfony/property-access": "^5.4",
+    "symfony/routing": "^5.4",
+    "symfony/http-foundation": "^5.4",
+    "symfony/property-info": "^5.4",
+    "symfony/form": "^5.4",
+    "symfony/yaml": "^5.4",
+    "symfony/security-core": "^5.4",
+    "symfony/translation": "^5.4",
+    "symfony/string": "^5.4",
+    "symfony/options-resolver": "^5.4",
+    "symfony/password-hasher": "^5.4",
+    "twig/twig": "^2.0",
+    "symfony/twig-bundle": "^5.4"
   },
   "require-dev": {
     "ext-sqlite3": "*",
-    "sensio/framework-extra-bundle": "^4.0|^5.0",
+    "sensio/framework-extra-bundle": "^5.4",
     "fakerphp/faker": "^1.5",
     "phpunit/phpunit": "^8.5.27",
     "symfony/phpunit-bridge": "^6"
   },
-
   "conflict": {
     "symfony/propel1-bridge": ">=2.8.0"
   },
-
   "replace": {
     "symfony/propel1-bridge": "<=2.8.0"
   },
@@ -45,5 +64,22 @@
       "url": "https://github.com/CrossKnowledge/Propel.git",
       "packagist.org": false
     }
-  ]
+  ],
+  "extra": {
+    "symfony": {
+      "allow-contrib": true,
+      "require": "5.4.*"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "symfony/flex": true
+    }
+  },
+  "scripts": {
+    "auto-scripts": {
+      "cache:clear": "symfony-cmd",
+      "assets:install %PUBLIC_DIR%": "symfony-cmd"
+    }
+  }
 }
