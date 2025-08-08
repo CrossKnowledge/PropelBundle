@@ -17,7 +17,7 @@
   },
   "require": {
     "php": "^7.2.5|^8.3",
-    "propel/propel1": "1.6.19|dev-symfony-5",
+    "propel/propel1": "^5.0.1",
     "symfony/framework-bundle": "^5.4",
     "symfony/flex": "^1.0",
     "symfony/console": "^5.4",
