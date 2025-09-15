@@ -124,7 +124,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/CrossKnowledge/Propel.git",
-                "reference": "ae0cb222a8b99abc795c3ffc0a1c41df09ae832e"
+                "reference": "acd8cb0fe7cc3be00ed6b866aa18ca5b56b66044"
             },
             "require": {
                 "phing/phing": "~2.4",
@@ -169,7 +169,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2025-09-15T08:56:33+00:00"
+            "time": "2025-09-15T10:17:26+00:00"
         },
         {
             "name": "psr/cache",
