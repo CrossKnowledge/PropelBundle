@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2be70af8ed2d25273d195b2c07a1456a",
+    "content-hash": "a84307a72fc12f7c4fbc22351588d8a9",
     "packages": [
         {
             "name": "phing/phing",
@@ -120,11 +120,11 @@
         },
         {
             "name": "propel/propel1",
-            "version": "dev-feature/CKLS-22635",
+            "version": "5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CrossKnowledge/Propel.git",
-                "reference": "acd8cb0fe7cc3be00ed6b866aa18ca5b56b66044"
+                "reference": "a4fad3ef9d18f66d6a1803c6b09cdbbd4637e445"
             },
             "require": {
                 "phing/phing": "~2.4",
@@ -169,7 +169,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2025-09-15T10:17:26+00:00"
+            "time": "2025-09-16T12:11:41+00:00"
         },
         {
             "name": "psr/cache",
@@ -5677,9 +5677,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "propel/propel1": 20
-    },
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
