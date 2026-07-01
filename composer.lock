@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e325358eb64cb1ded5ddac23b90ef3b",
+    "content-hash": "868de4edbb10d2a89df9b0a8f1579ad3",
     "packages": [
         {
             "name": "phing/phing",
@@ -120,11 +120,11 @@
         },
         {
             "name": "propel/propel1",
-            "version": "5.0.2.2",
+            "version": "5.0.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CrossKnowledge/Propel.git",
-                "reference": "d9560fa1525bbc8077f0fd3cecbccc59bb169a6a"
+                "reference": "49c05d7fcc58b62ff75f012ce0dc55106eac088b"
             },
             "require": {
                 "phing/phing": "~2.4",
@@ -169,7 +169,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2025-11-11T18:15:17+00:00"
+            "time": "2026-06-30T16:05:12+00:00"
         },
         {
             "name": "psr/cache",
@@ -5677,7 +5677,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
@@ -5686,5 +5686,5 @@
     "platform-dev": {
         "ext-sqlite3": "*"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.2.0"
 }
