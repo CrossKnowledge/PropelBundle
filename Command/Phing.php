@@ -9,12 +9,14 @@
  */
 namespace Propel\Bundle\PropelBundle\Command;
 
+use Phing\Phing as PhingAlias;
+
 /**
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  */
-class Phing extends \Phing
+class Phing extends PhingAlias
 {
-    public static function getPhingVersion()
+    public static function getPhingVersion(): string
     {
         return 'Phing/Symfony';
     }
@@ -22,7 +24,7 @@ class Phing extends \Phing
     /**
      * @see Phing
      */
-    public function runBuild()
+    public function runBuild(): void
     {
         // workaround for included phing 2.3 which by default loads many tasks
         // that are not needed and incompatible (eg phing.tasks.ext.FtpDeployTask)
