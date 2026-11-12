@@ -9,6 +9,7 @@
  */
 namespace Propel\Bundle\PropelBundle\Command;
 
+use Phing\Io\OutputStream;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -187,8 +188,8 @@ abstract class AbstractCommand extends Command
         $args[] = $taskName;
 
         // Enable output buffering
-        Phing::setOutputStream(new \OutputStream(fopen('php://output', 'w')));
-        Phing::setErrorStream(new \OutputStream(fopen('php://output', 'w')));
+        Phing::setOutputStream(new OutputStream(fopen('php://output', 'w')));
+        Phing::setErrorStream(new OutputStream(fopen('php://output', 'w')));
         Phing::startup();
         Phing::setProperty('phing.home', getenv('PHING_HOME'));
 
